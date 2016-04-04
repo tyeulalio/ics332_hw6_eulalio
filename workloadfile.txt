@@ -1,0 +1,2 @@
+web_browser 200 10 100
+renderer 100 200 5
