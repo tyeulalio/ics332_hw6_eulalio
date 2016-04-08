@@ -8,27 +8,34 @@ import schedulingsimulation.SchedulingMechanisms;
 import schedulingsimulation.SimulatedProcess;
 
 public class SchedulingAlgorithmRoundRobin implements SchedulingAlgorithm {
-	private Queue<SimulatedProcess> processQueue = new LinkedList<SimulatedProcess>();
-	private SimulatedProcess currentProcess = null; 
+	private Queue<SimulatedProcess> processQueue;
 
 	public SchedulingAlgorithmRoundRobin() {
 		// Whatever initialization here for data structures
 		// Needed by the scheduler (nothing for the Bogus scheduler)
+		processQueue = new LinkedList<SimulatedProcess>();
 	}
 
 	
 	public void handleCPUBurstCompletionEvent(SimulatedProcess process) {
-		// When a CPU burst completes I do nothing because a new process will
-		// become ready
-		return;
+		if (SchedulingMechanisms.getRunningProcess() == null){
+			// no process running, check if any are in the queue
+			if (!processQueue.isEmpty()) {
+				// start the process at the head of the queue
+				//currentProcess = processQueue.poll();
+				SchedulingMechanisms.dispatchProcess(processQueue.poll(), 10);
+			}
+			return;
+		}
 	}
 
 	public void handleExpiredTimeSliceEvent(SimulatedProcess process) {
+		// check if there's a process running
 		if (SchedulingMechanisms.getRunningProcess() == null){
+			// no process running, check if any are in the queue
 			if (!processQueue.isEmpty()) {
-				currentProcess = processQueue.poll();
-				System.out.println("Current process: " + currentProcess.getName());
-				SchedulingMechanisms.dispatchProcess(currentProcess, 10);
+				// start the process at the head of the queue
+				SchedulingMechanisms.dispatchProcess(processQueue.poll(), 10);
 			}
 			return;
 		}
@@ -36,13 +43,9 @@ public class SchedulingAlgorithmRoundRobin implements SchedulingAlgorithm {
 	public void handleProcessReadyEvent(SimulatedProcess process) {	
 		// Add ready processes to a queue as they come in
 		processQueue.add(process);
-		// get the process from head of queue without removing it from queue
-		currentProcess = processQueue.peek();
 		// if there's no process running, then run process at head of queue
 		if (SchedulingMechanisms.getRunningProcess() == null) {
-			System.out.println("Current ready process: " + currentProcess.getName());
-			SchedulingMechanisms.dispatchProcess(currentProcess, 10);
-			processQueue.poll(); // remove the process from the queue
+			SchedulingMechanisms.dispatchProcess(processQueue.poll(), 10);
 		}
 	}
 }

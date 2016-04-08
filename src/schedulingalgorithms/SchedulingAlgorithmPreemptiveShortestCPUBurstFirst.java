@@ -7,20 +7,27 @@ import schedulingsimulation.SchedulingMechanisms;
 import schedulingsimulation.SimulatedProcess;
 
 public class SchedulingAlgorithmPreemptiveShortestCPUBurstFirst implements SchedulingAlgorithm {
-	private PriorityQueueSort processSort = new PriorityQueueSort();
-	private PriorityQueue<SimulatedProcess> processQueue = new PriorityQueue<SimulatedProcess>(10, processSort);
-	private SimulatedProcess currentProcess = null;
-	private SimulatedProcess runningProcess = null;
-	private Long cpBurst, rpBurst = (long) 0;
+	private PriorityQueueSort processSort;
+	private PriorityQueue<SimulatedProcess> processQueue;
+	private SimulatedProcess currentProcess;
+	private SimulatedProcess runningProcess;
+	private Long cpBurst, rpBurst;
 	
 	public SchedulingAlgorithmPreemptiveShortestCPUBurstFirst() {
 		// Whatever initialization here for data structures
 		// Needed by the scheduler (nothing for the Bogus scheduler)
+		processSort = new PriorityQueueSort();
+		processQueue = new PriorityQueue<SimulatedProcess>(10, processSort);
+		currentProcess = null;
+		runningProcess = null;
+		cpBurst = (long) 0; 
+		rpBurst = (long) 0;
+
 	}
 
 	
 	public void handleCPUBurstCompletionEvent(SimulatedProcess process) {
-		while (!processQueue.isEmpty()) {
+		if (!processQueue.isEmpty()) {
 			currentProcess = processQueue.poll();
 			SchedulingMechanisms.dispatchProcess(currentProcess, -1);
 		}

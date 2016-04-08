@@ -8,12 +8,14 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class SchedulingAlgorithmNonPreemptiveFCFS implements SchedulingAlgorithm {
-	private Queue<SimulatedProcess> processQueue = new LinkedList<SimulatedProcess>();
-	private SimulatedProcess currentProcess = null; 
+	private Queue<SimulatedProcess> processQueue;
+	private SimulatedProcess currentProcess; 
 
 	public SchedulingAlgorithmNonPreemptiveFCFS() {
 		// Whatever initialization here for data structures
 		// Needed by the scheduler
+		processQueue = new LinkedList<SimulatedProcess>();
+		currentProcess = null; 
 	}
 
 	
@@ -21,7 +23,7 @@ public class SchedulingAlgorithmNonPreemptiveFCFS implements SchedulingAlgorithm
 		// Check if the queue has any ready processes waiting
 		// if it does, then dispatch the process at the head of queue
 		// until the queue is empty
-		while (!processQueue.isEmpty()) {
+		if (!processQueue.isEmpty()) {
 			currentProcess = processQueue.poll();
 			SchedulingMechanisms.dispatchProcess(currentProcess, -1);
 		}

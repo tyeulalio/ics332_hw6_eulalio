@@ -1,0 +1,6 @@
+renderer      	10   400    40
+matrix        	20   10000  1
+eclipse         50   8      100
+web_browser   	10   50     100
+emacs_editor    20   8      2
+bash_session    30   3      6

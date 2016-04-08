@@ -1,0 +1,5 @@
+p1-interactive 0 4 10
+p2-interactive 0 4 10
+p3-compute 20 100 1
+p4-compute 30 100 1
+p5-compute 40 100 1
